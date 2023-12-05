@@ -1,0 +1,241 @@
+﻿@model vwmEditGroup
+@{
+    ViewData["Title"] = "Edit group";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+<!-- Page edit-group -->
+<div class="container px-4 py-4" id="edit-group">
+    <form class="needs-validation" method="post" novalidate>
+        <h2 class="pb-2 border-bottom">
+            @Model.PageHeader
+            <button class="btn btn-primary-outline" type="submit" asp-controller="Groups" asp-action="Save">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#save" /></svg>
+            </button>
+            <button class="btn btn-primary-outline" type="submit" asp-controller="Groups" asp-action="Undo">
+                <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#undo" /></svg>
+            </button>
+        </h2>
+
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-10">
+
+                <!--To keep between Posts -->
+                <input asp-for="PageHeader" value="@Model.PageHeader" type="hidden" />
+
+                <!-- Server side validation errors, rough but just in case client side validation is not working or tampered with -->
+                @if (Model.ValidationResult.HasErrors)
+                {
+                    <div class="row g-3">
+                        @foreach (var item in Model.ValidationResult.ErrorMsgs)
+                        {
+                            <span class="alert alert-danger" role="alert">
+                                @item
+                            </span>
+                        }
+                    </div>
+                }
+
+                <div class="row g-3">
+
+                    <!-- Hidden fields used to bind input model -->
+                    <input asp-for="MusicGroupInput.MusicGroupId" type="hidden" />
+                    <input asp-for="MusicGroupInput.StatusIM" type="hidden" />
+
+                    <div class="col-sm-6">
+                        <label for="groupName" class="form-label">Group name</label>
+                        <input type="text" class="form-control" id="groupName" asp-for="MusicGroupInput.Name">
+                        <span asp-validation-for="MusicGroupInput.Name" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="genre" class="form-label">Genre</label>
+
+                        <select asp-for="MusicGroupInput.Genre" asp-items="@Model.GenreItems" class="form-control" id="genre">
+                            <option value="">Pick one</option>
+                        </select>
+                        <span asp-validation-for="MusicGroupInput.Genre" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="established" class="form-label">Established Year</label>
+                        <input type="text" class="form-control" id="established" asp-for="MusicGroupInput.EstablishedYear">
+                        <span asp-validation-for="MusicGroupInput.EstablishedYear" class="invalid-feedback"></span>
+                    </div>
+                </div>
+
+                <div class="row g-1">
+                    <h3 class="pb-2">Artists</h3>
+
+                    <!-- This is the parameter that will be sent to Post when item is clicked -->
+                    <input type="hidden" name="artistId" data-seido-selected-item-id-target />
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-10 themed-grid-head-col">Name</div>
+                        <div class="col-md-2 themed-grid-head-col">
+                            <button class="btn btn-success btn-sm m-1" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseAddArtist">
+                                New
+                            </button>
+                        </div>
+                    </div>
+                    <div class="collapse row mb-2 text-center" id="collapseAddArtist">
+                        <div class="form-floating col-md-5 themed-grid-col">
+                            <input type="text" asp-for="MusicGroupInput.NewArtist.FirstName" class="form-control" id="firstName" value="" />
+                            <span asp-validation-for="MusicGroupInput.NewArtist.FirstName" class="invalid-feedback"></span>
+                            <label for="firstName">first name</label>
+                        </div>
+                        <div class="form-floating col-md-5 themed-grid-col">
+                            <input type="text" asp-for="MusicGroupInput.NewArtist.LastName" class="form-control" id="lastName" value="" />
+                            <span asp-validation-for="MusicGroupInput.NewArtist.LastName" class="invalid-feedback"></span>
+                            <label for="lastName">last name</label>
+                        </div>
+                        <div class="col-md-2 themed-grid-col">
+                            <button type="submit" asp-controller="Groups" asp-action="AddArtist" class="btn btn-success btn-sm m-1">
+                                Ok
+                            </button>
+                        </div>
+                    </div>
+
+                    @for (int k = 0; k < Model.MusicGroupInput.Artists.Count; k++)
+                    {
+                        <div class="row mb-2 text-center @(Model.MusicGroupInput.Artists[k].StatusIM == vwmEditGroup.enStatusIM.Deleted? "d-none" : null)">
+
+                            <!-- Hidden fields so they are preserved by the Modelbinder -->
+                            <input asp-for="MusicGroupInput.Artists[k].StatusIM" value="@Model.MusicGroupInput.Artists[k].StatusIM" class="form-control" type="hidden" />
+                            <input asp-for="MusicGroupInput.Artists[k].ArtistId" value="@Model.MusicGroupInput.Artists[k].ArtistId" class="form-control" type="hidden" />
+                            <input asp-for="MusicGroupInput.Artists[k].FirstName" value="@Model.MusicGroupInput.Artists[k].FirstName" class="form-control" type="hidden" />
+                            <input asp-for="MusicGroupInput.Artists[k].LastName" value="@Model.MusicGroupInput.Artists[k].LastName" class="form-control" type="hidden" />
+
+                            <div class="col-md-10 themed-grid-col">@Model.MusicGroupInput.Artists[k].FirstName @Model.MusicGroupInput.Artists[k].LastName</div>
+                            <div class="col-md-2 themed-grid-col">
+                                <button class="btn btn-secondary btn-sm m-1" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseEditArtist_@Model.MusicGroupInput.Artists[k].ArtistId"
+                                        data-seido-selected-item-id="@Model.MusicGroupInput.Artists[k].ArtistId">
+                                    Edit
+                                </button>
+
+                                <!-- Button trigger post DeleteArtist -->
+                                <button type="submit" asp-controller="Groups" asp-action="DeleteArtist" class="btn btn-danger btn-sm m-1"
+                                        data-seido-selected-item-id="@Model.MusicGroupInput.Artists[k].ArtistId">
+                                    Del
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="collapse row mb-2 text-center" id="collapseEditArtist_@Model.MusicGroupInput.Artists[k].ArtistId">
+
+                            <div class="form-floating col-md-5 themed-grid-col">
+
+                                <!--Fields to edit -->
+                                <input asp-for="MusicGroupInput.Artists[k].editFirstName" class="form-control" value="@Model.MusicGroupInput.Artists[k].editFirstName" />
+                                <span asp-validation-for="MusicGroupInput.Artists[k].editFirstName" class="invalid-feedback"></span>
+                                <label for="MusicGroupInput.Artists[@k].editFirstName">first name</label>
+
+                            </div>
+                            <div class="form-floating col-md-5 themed-grid-col">
+
+                                <!--Fields to edit -->
+                                <input asp-for="MusicGroupInput.Artists[k].editLastName" class="form-control" value="@Model.MusicGroupInput.Artists[k].editLastName" />
+                                <span asp-validation-for="MusicGroupInput.Artists[k].editLastName" class="invalid-feedback"></span>
+                                <label for="MusicGroupInput.Artists[@k].editLastName">last name</label>
+
+                            </div>
+                            <div class="col-md-2 themed-grid-col">
+                                <button type="submit" asp-controller="Groups" asp-action="EditArtist" class="btn btn-success btn-sm m-1">
+                                    Ok
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row g-1">
+                    <!-- This is the parameter to a Post-->
+                    <input type="hidden" name="albumId" data-seido-selected-item-id-target />
+                    <h3 class="pb-2">Albums</h3>
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-8 themed-grid-head-col">Name</div>
+                        <div class="col-md-2 themed-grid-head-col">Release Year</div>
+                        <div class="col-md-2 themed-grid-head-col">
+                            <button class="btn btn-success btn-sm m-1" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseAddAlbum">
+                                New
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="collapse row mb-2 text-center" id="collapseAddAlbum">
+                        <div class="col-md-8 themed-grid-col">
+                            <input asp-for="MusicGroupInput.NewAlbum.AlbumName" class="form-control" value="" />
+                            <span asp-validation-for="MusicGroupInput.NewAlbum.AlbumName" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-md-2 themed-grid-col">
+                            <input asp-for="MusicGroupInput.NewAlbum.ReleaseYear" class="form-control" value="" />
+                            <span asp-validation-for="MusicGroupInput.NewAlbum.ReleaseYear" class="invalid-feedback"></span>
+                        </div>
+
+                        <div class="col-md-2 themed-grid-col">
+                            <button type="submit" asp-controller="Groups" asp-action="AddAlbum"  class="btn btn-success btn-sm m-1">
+                                Ok
+                            </button>
+                        </div>
+                    </div>
+
+                    @for (int k = 0; k < Model.MusicGroupInput.Albums.Count; k++)
+                    {
+                        <div class="row mb-2 text-center @(Model.MusicGroupInput.Albums[k].StatusIM == vwmEditGroup.enStatusIM.Deleted? "d-none" : null)">
+
+                            <!-- Hidden fields so they are preserved by the Modelbinder -->
+                            <input asp-for="MusicGroupInput.Albums[k].StatusIM" value="@Model.MusicGroupInput.Albums[k].StatusIM" class="form-control" type="hidden" />
+                            <input asp-for="MusicGroupInput.Albums[k].AlbumId" value="@Model.MusicGroupInput.Albums[k].AlbumId" class="form-control" type="hidden" />
+                            <input asp-for="MusicGroupInput.Albums[k].AlbumName" value="@Model.MusicGroupInput.Albums[k].AlbumName" class="form-control" type="hidden" />
+                            <input asp-for="MusicGroupInput.Albums[k].ReleaseYear" value="@Model.MusicGroupInput.Albums[k].ReleaseYear" class="form-control" type="hidden" />
+
+                            <div class="col-md-8 themed-grid-col">@Model.MusicGroupInput.Albums[k].AlbumName</div>
+                            <div class="col-md-2 themed-grid-col">@Model.MusicGroupInput.Albums[k].ReleaseYear</div>
+                            <div class="col-md-2 themed-grid-col">
+                                <button class="btn btn-secondary btn-sm m-1" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseEditAlbum_@Model.MusicGroupInput.Albums[k].AlbumId"
+                                        data-seido-selected-item-id="@Model.MusicGroupInput.Albums[k].AlbumId">
+                                    Edit
+                                </button>
+                                <!-- Button trigger post DeleteAlbum -->
+                                <button type="submit" asp-controller="Groups" asp-action="DeleteAlbum" class="btn btn-danger btn-sm m-1"
+                                        data-seido-selected-item-id="@Model.MusicGroupInput.Albums[k].AlbumId">
+                                    Del
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="collapse row mb-2 text-center" id="collapseEditAlbum_@Model.MusicGroupInput.Albums[k].AlbumId">
+                            <div class="col-md-8 themed-grid-col">
+                                <input asp-for="MusicGroupInput.Albums[k].editAlbumName" class="form-control" value="@Model.MusicGroupInput.Albums[k].editAlbumName" />
+                                <span asp-validation-for="MusicGroupInput.Albums[k].editAlbumName" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-2 themed-grid-col">
+                                <input asp-for="MusicGroupInput.Albums[k].editReleaseYear" class="form-control" value="@Model.MusicGroupInput.Albums[k].editReleaseYear" />
+                                <span asp-validation-for="MusicGroupInput.Albums[k].editReleaseYear" class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-2 themed-grid-col">
+                                <button type="submit" asp-controller="Groups" asp-action="EditAlbum" class="btn btn-success btn-sm m-1">
+                                    Ok
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@section script
+{
+    <!-- -->
+    <partial name="_ValidationScriptsPartial" />
+}

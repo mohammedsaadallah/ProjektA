@@ -1,0 +1,77 @@
+﻿@model vwmListOfGroups   //typed ViewModel
+@{
+    ViewData["Title"] = "List groups";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+<!-- Page List of groups -->
+<div class="container px-4 py-4" id="list-of-groups">
+    <h2 class="pb-2 border-bottom">List of Music groups</h2>
+
+    <p>Below are some of the worlds most famous Music bands.</p>
+    <p>The database now contains @Model.NrOfGroups music groups</p>
+    <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+        <div class="col-md-7 col-lg-10">
+            <div class="row mb-2 text-center">
+                <div class="col-md-10 themed-grid-head-col">Group Name</div>
+                <div class="col-md-2 themed-grid-head-col">
+                    <a href="~/Groups/EditGroup" class="btn btn-success btn-sm m-1" type="button">New</a>
+                </div>
+            </div>
+            <form method="post" class="needs-validation" novalidate>
+                <div class="row mb-2 text-center">
+
+                    @if (Model.MusicGroups is not null)
+                    {
+                        <!-- This is where selected item id will be stored -->
+                        <input type="hidden" name="groupId" data-seido-selected-item-id-target />
+
+                        @foreach (var item in Model.MusicGroups)
+                        {
+                            <div class="col-md-10 themed-grid-col">
+                                <a href="~/Groups/ViewGroup?id=@item.MusicGroupId">@item</a>
+
+                                <!-- altenative creating ~/Groups/ViewGroup/{id}  according to default route -->
+                                <!--
+                                    <a asp-controller="Groups" asp-action="ViewGroup" asp-route-id="@item.MusicGroupId">@item</a>
+                                -->
+                            </div>
+                            <div class="col-md-2 themed-grid-col">
+                                <a href="~/Groups/EditGroup?id=@item.MusicGroupId" class="btn btn-secondary btn-sm m-1" type="button">Edit</a>
+
+                                <!-- Button to trigger modal confirmation with modal in the form tag -->
+                                <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#delModal"
+                                        data-seido-modal-body="@item.Name is about to be deleted."
+                                        data-seido-selected-item-id="@item.MusicGroupId">
+                                    Del
+                                </button>
+                            </div>
+                        }
+                    }
+
+                    <!-- Modal in the form tag -->
+                    <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="softModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger" id="softModalLabel">Confirm deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Hello from modal
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                    <button type="submit" asp-controller="Groups" asp-action="DeleteGroup" class="btn btn-primary btn-danger">Ok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

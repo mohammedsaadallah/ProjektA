@@ -1,0 +1,71 @@
+﻿@model vwmViewGroup
+@{
+    ViewData["Title"] = "View group";
+}
+
+<!-- Page view-group -->
+<div class="container px-4 py-4" id="view-group">
+    <h2 class="pb-2 border-bottom">
+        View details of a music group
+
+        <a href="~/Groups/EditGroup?id=@Model.MusicGroup.MusicGroupId">
+            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#edit" /></svg>
+        </a>
+    </h2>
+    <form class="needs-validation" novalidate>
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-10">
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="groupName" class="form-label">GroupName</label>
+                        <input type="text" class="form-control" id="groupName" value="@Model.MusicGroup.Name" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="genre" class="form-label">Genre</label>
+                        <input type="text" class="form-control" id="genre" value="@Model.MusicGroup.strGenre" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="established" class="form-label">Established Year</label>
+                        <input type="text" class="form-control" id="established" value="@Model.MusicGroup.EstablishedYear" readonly>
+                    </div>
+                </div>
+                <div class="row g-1">
+                    <h3 class="pb-2">Artists</h3>
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-12 themed-grid-head-col">Name</div>
+                    </div>
+                    @foreach (var item in Model.MusicGroup.Artists)
+                    {
+                        <div class="row mb-2 text-center">
+                            <div class="col-md-12 themed-grid-col">@item</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="row g-1">
+                    <h3 class="pb-2">Albums</h3>
+
+                    <div class="row mb-2 text-center">
+                        <div class="col-md-10 themed-grid-head-col">Name</div>
+                        <div class="col-md-2 themed-grid-head-col">Release Year</div>
+                    </div>
+                    @foreach (var item in Model.MusicGroup.Albums)
+                    {
+                        <div class="row mb-2 text-center">
+                            <div class="col-md-10 themed-grid-col">@item.Name</div>
+                            <div class="col-md-2 themed-grid-col">@item.ReleaseYear</div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
