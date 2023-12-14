@@ -1,21 +1,20 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 25.0.1706.6
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppMusicRazor", "AppMusicRazor\AppMusicRazor.csproj", "{3A797AAF-B5F8-4C2C-AD7D-FD29B04CCAE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMusicRazor", "AppMusicRazor\AppMusicRazor.csproj", "{3A797AAF-B5F8-4C2C-AD7D-FD29B04CCAE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{D195CEE6-F1F5-4E9A-B1D6-D64A5CBD3DAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{D195CEE6-F1F5-4E9A-B1D6-D64A5CBD3DAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configuration", "Configuration\Configuration.csproj", "{9EFAE9B0-21AE-48D6-B6B4-D413AE864E33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Configuration", "Configuration\Configuration.csproj", "{9EFAE9B0-21AE-48D6-B6B4-D413AE864E33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContext", "DbContext\DbContext.csproj", "{CAD2565C-268A-46F8-B850-1A9F7331091B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbContext", "DbContext\DbContext.csproj", "{CAD2565C-268A-46F8-B850-1A9F7331091B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{E7A6EF90-EA77-4F4D-B890-131324C9DAB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E7A6EF90-EA77-4F4D-B890-131324C9DAB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppMusicWebApi", "AppMusicWebApi\AppMusicWebApi.csproj", "{0FC90EA8-86E0-409C-99C3-8E473A16490B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMusicWebApi", "AppMusicWebApi\AppMusicWebApi.csproj", "{0FC90EA8-86E0-409C-99C3-8E473A16490B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppMusicMVC", "AppMusicMVC\AppMusicMVC.csproj", "{F17E2C52-46DF-4305-8B47-2E0227786603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMusicMVC", "AppMusicMVC\AppMusicMVC.csproj", "{F17E2C52-46DF-4305-8B47-2E0227786603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

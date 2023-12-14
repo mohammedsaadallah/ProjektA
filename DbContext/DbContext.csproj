@@ -26,4 +26,8 @@
    <ProjectReference Include="..\Configuration\Configuration.csproj" />
    <ProjectReference Include="..\Models\Models.csproj" />
  </ItemGroup>
+
+ <ItemGroup>
+   <Folder Include="Migrations\SqlServerMigrations\" />
+ </ItemGroup>
 </Project>

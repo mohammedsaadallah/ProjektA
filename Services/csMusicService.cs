@@ -42,7 +42,7 @@ public class csMusicService : IMusicService
     {
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
-            //db.Albums.RemoveRange(db.Albums.Where(mg => mg.Seeded));
+            db.Albums.RemoveRange(db.Albums.Where(mg => mg.Seeded));
             db.MusicGroups.RemoveRange(db.MusicGroups.Where(mg => mg.Seeded));
             await db.SaveChangesAsync();
 
@@ -55,6 +55,7 @@ public class csMusicService : IMusicService
     #region CRUD MusicGroup
     public async Task<List<csMusicGroup>> ReadMusicGroupsAsync(bool flat)
     {
+        flat = true;
         using (var db = csMainDbContext.DbContext("sysadmin"))
         {
             if (flat)

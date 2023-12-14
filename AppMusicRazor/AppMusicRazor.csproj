@@ -13,7 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
-    <Folder Include="Pages\" />
     <Folder Include="SeidoHelpers\" />
   </ItemGroup>
   <ItemGroup>
